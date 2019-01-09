@@ -7,12 +7,7 @@
  */
 
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
-import {
-  Image,
-  TextInput,
-  TouchableHighlight,
-} from 'react-native';
+import {Platform, StyleSheet, Text, View, ScrollView, Image, TextInput,TouchableHighlight } from 'react-native';
 import _ from 'lodash';
 
 const instructions = Platform.select({
@@ -31,32 +26,22 @@ export default class App extends Component<Props> {
 	}
 
 
-
   componentDidMount(){
 
     const self = this;
     fetch('http://extraview.herokuapp.com/api/people/')
       .then(res => res.json())
       .then(json => this.setState({ data: json }));
-      //.then(json => this.updateState( json, self ));
+      
   }
-
-/*
-  updateState = ( a, b ) => { 
-    b.setState({ data: _.map(a) }); 
-    console.log( "DDDD" ) ; 
-    console.log( this.state.data ) 
-  };
-*/
-
 
   render() {
     console.log( "Here1" );
-    //if ( this.state.data )
-      //console.log( this.state.data );
+    if ( this.state.data )
+      console.log( this.state.data );
     console.log( "Here2" );
     return (
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         <Text style={styles.welcome}>Welcome to React Native !!</Text>
         <Text style={styles.instructions}>To get started, edit App.js</Text>
         <Text style={styles.instructions}>{instructions}</Text>
@@ -65,16 +50,62 @@ export default class App extends Component<Props> {
           this.state.data.map((person, index) => (
             <View key={index} style={styles.person}>
               <Text>Name: {person.name}</Text>
-              <Text onPress={() => this.deletePerson(person)}>Delete Contact</Text>
             </View>
           ))
         }
-      </View>
+      </ScrollView>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  container: {
+    marginTop: 0,
+    padding: 20,
+	flex: 1,
+    ...Platform.select({
+    	ios: {
+            backgroundColor: '#E9D8F7',
+        },
+        android: {
+            backgroundColor: '#D9F2F7',
+        },
+    }),
+  },
+  title: {
+    fontSize: 18,
+    textAlign: 'center',
+  },
+  input: {
+    backgroundColor: '#e4e4e4',
+    height: 45,
+    borderRadius: 3,
+    padding: 5,
+    marginTop: 12,
+  },
+  welcomeImage: {
+    width: 100,
+    height: 80,
+    resizeMode: 'contain',
+    marginTop: 15,
+    marginLeft: 0,
+    alignSelf: 'center',
+  },
+  button: {
+    backgroundColor: '#ff9900',
+    height: 45,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 12,
+    borderRadius: 3,
+  },
+  buttonText: {
+    color: 'white',
+  },
+  person: {
+    marginTop: 12,
+  },
+  /*
   container: {
     flex: 1,
     justifyContent: 'center',
@@ -91,4 +122,5 @@ const styles = StyleSheet.create({
     color: '#333333',
     marginBottom: 5,
   },
+  */
 });
